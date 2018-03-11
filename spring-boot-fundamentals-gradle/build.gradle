@@ -1,0 +1,65 @@
+buildscript {
+  repositories {
+    //jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '2.0.0.RELEASE'
+    //classpath group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.5'
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+//apply plugin: 'spring-boot'
+apply plugin: "org.springframework.boot"
+//apply plugin: 'org.sl4j'
+
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+ext {
+  slf4jApiVersion = '1.8.0-beta1'
+  springBootVersion = '2.0.0.RELEASE'
+  springContextSupportVersion = '5.0.4.RELEASE'
+  jodaTimeVersion = '2.9.9'
+  jacksonDatatypeJodaVersion = '2.9.4'
+  guavaVersion = '23.0'
+  jadiraVersion = '5.0.0.GA'
+  swaggerVersion = '2.8.0'
+  hsqldbVersion = '2.4.0'
+  mysqlVersion = '8.0.9-rc'
+}
+
+repositories {
+  jcenter()
+}
+
+
+dependencies {
+	compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jApiVersion
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion
+	
+	//import org.springframework.cache.guava.GuavaCacheManager;
+	
+	
+	compile group: 'org.springframework', name: 'spring-context', version: springContextSupportVersion
+	compile group: 'org.springframework', name: 'spring-context-support', version: springContextSupportVersion
+  
+	compile group: 'joda-time', name: 'joda-time', version: jodaTimeVersion
+	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: jacksonDatatypeJodaVersion
+	compile group: 'com.google.guava', name: 'guava', version: '23.0'
+	compile group: 'com.google.guava', name: 'guava-parent', version: '23.0'
+	compile group: 'org.jadira.usertype', name: 'usertype.extended', version: jadiraVersion
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion
+  
+	runtime group: 'org.hsqldb', name: 'hsqldb', version: hsqldbVersion
+	runtime group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+  
+	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
+}

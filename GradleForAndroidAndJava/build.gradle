@@ -1,0 +1,27 @@
+apply plugin: "java"
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	custom
+}
+
+dependencies {
+	//compile 'com.google.guava:guava:18.0'
+	//compile 'org.springframework:spring-core:4.1.1.RELEASE'
+	compile 'commons-logging:commons-logging:1.1.3'
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+	custom 'com.google.guava:guava:18.0'
+}
+
+task execute(type: JavaExec) {
+	main = "com.udacity.gradle.Person"
+	classpath = sourceSets.main.runtimeClasspath
+}
+
+task copyDependencies(type: Copy) {
+	from configurations.custom
+	into 'build/libs'
+}

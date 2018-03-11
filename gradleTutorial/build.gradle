@@ -1,0 +1,103 @@
+//www.gradle.org/docs/current/dsl/org.gradle.api.Task.html
+
+repositories {
+	mavenCentral()
+	//mavenLocal()
+}
+
+//Adds Build Tasks: assemble, build, buildDependents, buildNeeded, classes, clean, jar, testClasses
+apply plugin: 'java'
+// apply plugin: "java $variable"
+
+configurations {
+	myConfig
+}
+
+dependencies {
+	//compile: Configuration (=set of files)
+	compile "org.apache.commons:commons-lang3:3.7"
+	myConfig "org.apache.commons:commons-lang3:3.7"
+}
+
+//Groovy Closures (=Code executed against that class): Configure tasks
+//sourceSets Closure is executed against the sourceSets Variable
+sourceSets {
+	main.java.srcDir "src/main"
+	//Build fails if these tests fail
+	test.java.srcDir "src/test"
+}
+
+//build task uses jar task
+jar {
+	// it: like this in Closures
+	from configurations.myConfig.collect { zipTree it }
+	manifest.attributes "Main-Class": "net.dermetfan.gradleTutorial.Main"
+}
+
+// task has properties group, description
+/* 
+task hello {
+	group 'greeting'
+	description 'Greets you.'
+	
+	// *** configuration phase ***
+	// will be shown by 'gradle tasks'
+	println 'Hello from the configuration phase!'
+	
+	ext.greeting = 'Hey how\'s it going?'
+	
+	// *** execution phase ***
+	//doLast appends task 'println Hello!' to the end of the qeue
+	doLast { println 'Hello!' }
+	doLast { println 'What\'s crackin?' }
+	doFirst { println 'Hey, I know this guy...' }
+	doLast { println "Greeting: $greeting" }
+}
+*/
+
+// hello << { ... } is the same as hello.doLast
+/*
+hello << { println 'I was appended using <<' }
+*/
+
+// Task Type: JavaExec: dont pack it before you run it
+task run(type: JavaExec, dependsOn: classes) {
+	main 'net.dermetfan.gradleTutorial.Main'
+	classpath sourceSets.main.runtimeClasspath
+	args 'Hello World'
+}
+
+// Task Type: Exec = Executes a command line process 
+task runJar(type: Exec, dependsOn: jar) {
+	executable 'java'
+	args '-jar', "$jar.archivePath", 'Hello World'
+}
+
+/*
+task hello {
+	// falss/true: you can put something to validate here
+	onlyIf { false } 
+	// *** configuration phase (will still be executed when false)***
+	println 'Hello from the configuration phase of the task hello'
+} << {
+	println 'Hello again!'
+}
+
+hello.enabled = false
+*/
+
+/*
+task writeGreeting {
+	onlyIf { file('greeting.txt').text.equals('Hello, fellow citizen!') }
+} << {
+	file('greeting.txt').text = 'Hello, fellow citizen!'
+}
+*/
+
+/* 
+task writeGreeting {
+	outputs.file file('greeting.txt')
+} << {
+	file('greeting.txt').text = 'Hello, fellow citizen!'
+}
+*/

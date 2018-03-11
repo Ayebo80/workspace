@@ -1,0 +1,143 @@
+### GitHub Project Sources:
+1. https://github.com/leanstacks/spring-boot-fundamentals/tree/gradle
+2. https://github.com/leanstacks/spring-boot-fundamentals/tree/gradle-build-dash
+3. https://github.com/leanstacks/spring-boot-fundamentals/tree/gradle-jacoco
+4. https://github.com/leanstacks/spring-boot-fundamentals/tree/gradle-checkstyle
+5. https://github.com/leanstacks/spring-boot-fundamentals/tree/gradle-pmd
+6. https://github.com/leanstacks/spring-boot-fundamentals/tree/gradle-defaulttasks
+
+Windows CMD mehr Zeilen anzeigen:
+Standardwerte => Eigenschaften von Konsolenfenster => Tab"Layout" => Fensterpuffergröße "Höhe"
+
+https://stackoverflow.com/questions/37964205/classnotfoundexception-org-springframework-cache-cachevalueretrievalexception
+Keep the version of spring-context and spring-context-support compatible with each other.
+*** !!! Every Plugin Needs His Version To Be Used described !!! ***
+You can see in the dependency tree where the jar version conflict is happening
+./gradlew dependencyReport (same as: ./gradlew dependencies)	=> /build/reports/project/dependencies.txt
+
+### Running Spring FW with Gradle 2.1+ OR previous Gradle versions
+https://plugins.gradle.org/plugin/org.springframework.boot
+
+========================================================================================================
+1. Using the Gradle Build System with Spring Boot
+What is Gradle?
++ A SW Build System; Analogous to Maven
++ Modular to the core
++ Highly extensible
++ Robust multi-project support
+(Build-Script for each sub-module inherits Build-Script of Parent, require little additional customation)
++ Rich dependency management; transitive, exclusions, etc.
++ Groovy language
+
+How to Install Gradle
+https://docs.gradle.org => User Guide => Chapter "Installing Gradle"
+
+The build.gradle-File:
+apply plugin: 'java': To inform Java that we wish to do java builds
+apply plugin: 'eclipse': Support for Eclipse based Development-Environments
+apply plugin: 'spring-boot': build Executable JAR-files & run projects directly from source
+
+version = '1.0.0-SNAPSHOT' #Default: Unspecified
+sourceCompatibility = 1.8  #Which Java-Version to use when Compiling the Source
+targetCompatibility = 1.8  #which Java-Version to use when Compiling Class-Files
+# DEFAULT: same value as sourceCompatibility (can be omitted)
+
+dependencies-group
+1. compile: Classes required to compile the PROD-Source
+2. runtime: Classes required to execute the PROD-Source	#runtime includes compile
+3. testCompile: Classes required to compile the TEST-Source
+4. testRuntime: Classes required to execute the TEST-Source #testruntime includes compile, runtime & testcompile
+
+1.compile group:
+org.springframework: Spring Java FW
+joda-time: The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8. 
+jackson-datatype-joda: Add-on module for Jackson (http://jackson.codehaus.org) to support Joda (http://joda-time.sourceforge.net/) data types. 
+Jackson implements functionality for:
+* Reading (parsing) and writing (generation) of Json content
+* Data-binding (data-mapping, [de-]serialization) support to
+  allow for converting between Json and Java objects
+* Support for converting to/from other data formats and access APIs,
+  to improve interoperability.
+guava:  Google Core Libraries for Java
+jadira: Jadira JAva FW
+swagger: API FW,  large ecosystem of tools that helps developers design, build, document, and consume RESTful Web services.
+
+2. runtime group:
+hsqldb: SQL relational database software written in Java.
+mysql-connector-java: 
+
+3. testCompile group:
+spring-boot-starter-test: Most developers use the spring-boot-starter-test “Starter”, which imports both Spring Boot test modules as well as JUnit, AssertJ, Hamcrest, and a number of other useful libraries.
+
+#################################################
+build.gradle
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '2.0.0.RELEASE'
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+//apply plugin: 'spring-boot'
+apply plugin: "org.springframework.boot"
+####################################################
+
+# Install Gradle Wrapper:
+### Gradle Wrapper provides full functionality fo Gradle without installing it on the Build Machine
+CMD> ./gradle wrapper --gradle-version 2.10 #Enter at project home-directory
+# Downloads & Installs gradle-binaries into the /gradle-directory, & Installs gradlew(Nix) & gradlew.bat(WIN)
+
+
+CMD> ./gradle wrapper --gradle-version 4.5.1
+
+CMD> ./gradle --version
+
+CMD> ./gradlew assemble
+#Compile project without executing UnitTests or BuildReports
+# Compiles RPOD source & copies all PROD resources to the /build-subdirectory
+# & assembles them to the JAR-file
+./gradlew clean
+# Clean the project
+./gradlew check 
+#Compiles PROD & TEST Source, Copies Production & Test Resources to the /build-subdirectory
+#, then Executes all Unit-Tests & executes all of the Build Reports
+./gradlew build
+# BUILD = ASSEMBLE + CHECK
+
+# bootrun: ASSEMBLE, then starts Application using Embedded Webserver 
+# !!! Meant for local development only, Press CTRL+C to stop the Embedded Webserver
+
+==========================================================================================================
+2. Introduction to Gradle Project and Build Reports
+apply plugin: 'project-report' #Generates Reports about the Build Project, e.g. Configurations, Task, Dependencies
+# Each of the Reports is available in /build/reports/project
+
+### Running Spring FW with Gradle 2.1+ OR previous Gradle versions
+https://plugins.gradle.org/plugin/org.springframework.boot
+
+### Gradle Wrapper provides full functionality fo Gradle without installing it on the Build Machine
+./gradlew taskReport (same as: ./gradlew tasks)			=> /build/reports/project/tasks.txt
+./gradlew propertyReport ???(same as: ./gradlew properties)	=> /build/reports/project/properties.txt
+./gradlew dependencyReport (same as: ./gradlew dependencies)	=> /build/reports/project/dependencies.txt
+./gradlew htmlDependencyReport (dependencyReport in HTML)	=> /build/reports/project/dependencies/js/index.html
+./gradlew projectReport						=> creates ALL ABOVE Reports
+
+#adds a Task, that provides a consolidated Report. 
+# List includes links to Reports created by the following gradle plugins:
+# checkstyle, codenarc, findbugs, htmlDependencyReport, jacoco (CodeCoverage), jdepend, pmd, standard JavaUnitTests
+
+apply plugin: 'build-dashboard'	
+./gradlew build-dashboard					=> /build/reports/build-dashboard/index.html
+
+==========================================================================================================
+3. Using the Gradle JaCoCo Plugin for Unit Test Code Coverage Reporting
+jacoco (CodeCoverage)	=> JaCoCo is a library, that analyzes a Java-Projects Main-Codebase & 
+determines how much of the Code is invoked by Unit-Tests => tracks Classes, Lines & Branches which are
+covered by the Unit-Tests
+
+
+
