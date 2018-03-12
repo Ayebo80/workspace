@@ -1,0 +1,122 @@
+What is JUnit?
++ e.g. Test result of a Method-Call => Assertion: compares Expected to Received Output
++ JUnitTestRunner
++ Each TC is marked with the @Test
+
+JUnit Features
++ Asserts: 
++ Test setup and teardown: Several ways to setup test data & tear down test data
++ Exception testing: Test if excep was or was not thrown
++ Test suites: Managing a large amount of tests
++ Parameterized Testing: Feed a set of data to a test
++ Assumptions: Ignore tests that are not qualified to run a certain systems/OSs
++ Rules: A rule that lets us create a temporary file
++ Theories: ????
++ Integration with popular build systems: Ant, Maven, Gradle
+
+How JUnit Works:
+SUT (Subject Under Test): most commonly a JAVA CLASS
+
+What Is Unit Testing?
+Take smallest "unit" of code & test it => In JAVA smallest "unit" is a JAVA CLASS
+UNIT TEST vs:
++ Integration/System-Test
++ if you are using a DB or Webservice its NOT a UNIT TEST
+
+Getting JUnit
+Download the following JARs and put them on your test classpath:
++ junit.jar
++ hamcrest-core.jar
+
+Eclipse => New => Select a Wizard => Java => JUnit => JUnit Test Case or JUnit Test Suite
+
+Project Overview
+HitoryItem.java => DTO (Data Transfer Object) Class
+
+Hello JUnit
+#####################################################
+"ProteinTracker" => New => Java Project => ProteinTrackerTests
+src => New => JUnit Test Case => Hello JUnitTest
+Add JUnit 4 library to the build path
+######################################################
+====================================================================================
+2) JUnit Basics
+########################################################################
+ProteinTrackerTests => Build Path => Configure Build Path => Tab "Projects" => Add => "ProteinTracker"
+!!! Now we can access the "ProteinTracker" Classes from inside our ProteinTrackerTests Project
+Create new Class "TrackingServiceTests.java" & put all Test-Methods here
+#######################################################################
+First Test: When TrackingService is created: Total set to "0"
+Eclipse: import missing packages when I press Ctrl+Shift+O.
+
+Refactor => Convert Local Variable to Field => Initialize in "Field declaration" 
+
+12. Exception Testing
+public void setGoal(int value) throws InvalidGoalException {
+	if(value < 0)
+		throw new InvalidGoalException();
+	goal = value;
+}
+
+# Create class 'InvalidGoalException'
+# Add throws declaration
+
+@Test(expected = InvalidGoalException.class)
+public void WhenGoalIsSetToLessThanZeroExceptionIsThrown() throws InvalidGoalException
+{
+	service.setGoal(-5);
+}
+
+# Add throws declaration
+
+15) Using Timeout
+# !!! Use when there is a Test which i know takes along time, so that this test does not hold up other tests
+@Test(timeout = 200)
+public void BadTest()
+{
+	for(int i =0; i < 10000000; i++)
+		service.addProtein(1);
+}
+
+16) Assertions (Basic)
++ assertArrayEquals
++ assertEquals
++ assertTrue, assertFalse
++ assertNull, assertNotNull
++ assertSame, assertNotSame
+!!! assertSame vs. assertEquals: assertEquals check if Objects are Equal
+assertSame checks if Objects are the Same Objects
++ fail: If we want just to fail the test
+========================================================================
+3) Advanced JUnit
+2. Test Suites
+New=> Java Class => ProteinTrackerSuite
+
+3. Creating Test Suites
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+	HelloJUnitTest.class,
+	TrackingServiceTests.class
+	})
+public class ProteinTrackerSuite {
+}
+
+4. Categories (similar to Test Suites)
+5. Using Categories
+a) New => Java Interfaces (example) => Name GoodTestsCategory
+b) @Category(GoodTestsCategory.class) after @Test in another class
+c) New => Java Class => GoodTestsSuite
+********************************************************************************************************
+* Categories for long runing tests, run as part of the build, but not on my local dev machine  *
+********************************************************************************************************
+
+6) Parameterized Tests
+7) Creating Parameterized Tests
+
+
+
+
+
