@@ -1,16 +1,24 @@
+package com.simpleprogrammer.proteintracker.tests;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertArrayEquals;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.matchers.JUnitMatchers.*;
+import static org.hamcrest.core.StringContains.containsString;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.Timeout;
 
 import com.simpleprogrammer.proteintracker.HistoryItem;
 import com.simpleprogrammer.proteintracker.InvalidGoalException;
@@ -62,7 +70,9 @@ public class TrackingServiceTests {
 	public void WhenAddingProteinTotalIncreasesByThatAmount()
 	{
 		service.addProtein(10);
-		assertEquals("Protein amount was not correct", 10, service.getTotal());
+		//assertEquals(10, service.getTotal());
+		//assertThat(service.getTotal(), is(10));
+		assertThat(service.getTotal(), allOf(is(10), instanceOf(Integer.class)));
 	}
 	
 	@Test
@@ -73,9 +83,15 @@ public class TrackingServiceTests {
 		assertEquals(0, service.getTotal());
 	}
 	
-	@Test(expected = InvalidGoalException.class)
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+	
+	@Test //(expected = InvalidGoalException.class)
 	public void WhenGoalIsSetToLessThanZeroExceptionIsThrown() throws InvalidGoalException
 	{
+		thrown.expect(InvalidGoalException.class);
+		//thrown.expectMessage("Goal was less then zero!");
+		thrown.expectMessage(containsString("Goal"));
 		service.setGoal(-5);
 	}
 	
@@ -84,6 +100,8 @@ public class TrackingServiceTests {
 	@Category(GoodTestsCategory.class)
 	public void WhenRemovingProteinAfterAddingProteinRemainsZero()
 	{
+//		for(int i =0; i < 10000000; i++)
+//			service.addProtein(1);
 		service.addProtein(5);
 		service.removeProtein(5);
 		assertEquals(0, service.getTotal());
@@ -107,6 +125,10 @@ public class TrackingServiceTests {
 		assertEquals(false, service.isGoalMet());
 	}
 	
+	@Rule
+	public Timeout timeout = new Timeout(20, TimeUnit.MILLISECONDS);
+	
+	@Ignore
 	@Test(timeout = 200)
 	public void BadTest()
 	{
@@ -124,6 +146,7 @@ public class TrackingServiceTests {
 
 	}
 	
+	@Ignore
 	@Test
 	public void WhenGetHistoryArrayEquals()
 	{

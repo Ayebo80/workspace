@@ -115,8 +115,127 @@ c) New => Java Class => GoodTestsSuite
 
 6) Parameterized Tests
 7) Creating Parameterized Tests
+Create => New => JavaClass => "ParameterizedTests"
+8) Advanced Assertions (AssertThat uses hamcrest Java-Library)
+AssertThat([value],[matcherstatement])
+matcherstatement: Is, HasItem, ContainsString, IsNull, AllOf
+Example: ANSTATT AssertEquals(3, result); BESSER AssertThat(result.Is(3));
+
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.matchers.JUnitMatchers.*;
+
+Hamcrest CoreMatchers: http://junit-team.github.com/junit/javadoc/latest/org/hamcrest/core/package-summary.html
+AllOf, AnyOf, DescribedAs, Is, IsAnything, IsEqual, IsInstanceOf(Integer.class), IsNot, IsNull, IsSame
+
+JUnitMatchers: http://junit-team.github.com/junit/javadoc/latest/org/junit/matchers/JUnitMatchers.html
+******************************************************
+Of Mehrere Matchers Testen:
+assertThat(service.getTotal(), allOf(is(10), instanceOf(Integer.class)));
+******************************************************
+
+********************************************
+STRG+SPACE = Show All Overloaded Functions
+********************************************
+10. Advanced Exception Testing
+11. Usign Expected Exception
+
+https://stackoverflow.com/questions/23984756/why-is-my-import-of-the-containsstring-method-not-working
+import static org.hamcrest.core.StringContains.containsString;
+INSTEAD of import static org.junit.matchers.JUnitMatchers.containsString;
+
+12. Rules (let you extend the functionality of JUnit)
++ TemporaryFolder
++ ExternalResource
++ ErrorCollector
++ Verifier
++ TestWatcher
++ TestName
++ Timeout
++ ExpectedException
++ RuleChain
+
+@ClassRule: Rules to work at class level
+
+13. Using Rules
+@Rule
+	public Timeout timeout = new Timeout(20, TimeUnit.MILLISECONDS); 
+ANSTATT	public Timeout timeout = new Timeout(20);
+
+https://github.com/junit-team/junit4/blob/master/doc/ReleaseNotes4.12.md
+Timeout deprecated the old constructor Timeout(int millis). A new constructor is available: Timeout(long timeout, TimeUnit unit). It enables you to use different granularities of time units like NANOSECONDS, MICROSECONDS, MILLISECONDS, and SECONDS. Examples:
+@Rule public final TestRule globalTimeout = new Timeout(50, TimeUnit.MILLISECONDS);
+
+14. Theories
+15. Using Theories (funktioniert nicht richtig => // Compiled from Filter.java (version 1.5 : 49.0, super bit))
+New => Java Class => TrackingServiceTheories
+
+===============================================================================================================================
+4) Integrating JUnit
+1. Introduction
+2. Alternatives Runners
+3. Console Runner
+import org.junit.internal.TextListener;
+import org.junit.runner.JUnitCore;
+
+public class ConsoleRunner {
+
+	public static void main(String arg[]) {
+		
+		JUnitCore junit = new JUnitCore();
+		junit.addListener(new TextListener(System.out));
+		
+		junit.run(TrackingServiceTests.class);
+		
+	}
+}
+
+4. Getting JUnit Jars
+https://github.com/junit-team/junit4/wiki/Download-and-Install
+http://search.maven.org/#search|gav|1|g:%22junit%22%20AND%20a:%22junit%22
+http://search.maven.org/#search|gav|1|g:%22org.hamcrest%22%20AND%20a:%22hamcrest-core%22
+=> kopieren nach E:\IT\eclipse\workspace\plugins\*
+
+5. Changing The Project
+ProteinTrackerTests/src New=>Package=>Name: com.simpleprogrammer.proteintracker.tests
+Move everything from Package "(default package)" to "com.simpleprogrammer.proteintracker.tests"
+
+Select Project "ProteinTracker" & "ProteinTrackerTests" 
+and Export=>Java=>JAR file=> E:\IT\eclipse\workspace\ProteinTracker.jar
+
+6. Run From The Command Line
+cd E:\IT\eclipse\workspace
+java
+java -cp E:\IT\eclipse\workspace\plugins\*;E:\IT\eclipse\workspace\ProteinTracker.jar org.junit.runner.JUnitCore com.simpleprogrammer.proteintracker.tests.TrackingServiceTests
+
+7. JUnit And Ant
+
+8. Creating an Ant Build
+
+9. Running With Ant
+
+10. JUnit Reporting Bug
+
+11. Creating A Report
+
+12. JUnit And Maven
+
+13. Converting To Maven
+
+14. Running Tests in Maven
+
+15. Code Coverage
+
+16. Using EclEmma
+
+17. Cobetura
+
+18. Up Next
+
+=============================================================================================
+5) Beyond JUnit
+1. Introduction
 
 
 
-
-
+=======================================================================================
