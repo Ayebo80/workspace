@@ -4,9 +4,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.matchers.JUnitMatchers.*;
 import static org.hamcrest.core.StringContains.containsString;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
@@ -20,7 +17,6 @@ import org.junit.experimental.categories.Category;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Timeout;
 
-import com.simpleprogrammer.proteintracker.HistoryItem;
 import com.simpleprogrammer.proteintracker.InvalidGoalException;
 import com.simpleprogrammer.proteintracker.TrackingService;
 
@@ -107,18 +103,18 @@ public class TrackingServiceTests {
 		assertEquals(0, service.getTotal());
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
-	public void WhenGoalIsMet()
+	public void WhenGoalIsMet() throws InvalidGoalException
 	{
 		service.setGoal(5);
 		service.addProtein(5);
 		assertEquals(true, service.isGoalMet());
 	}	
 	
-	@Ignore
+	//@Ignore
 	@Test
-	public void WhenGoalIsNotMet()
+	public void WhenGoalIsNotMet() throws InvalidGoalException
 	{
 		service.setGoal(5);
 		service.addProtein(4);
