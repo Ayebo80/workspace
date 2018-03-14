@@ -209,23 +209,56 @@ java
 java -cp E:\IT\eclipse\workspace\plugins\*;E:\IT\eclipse\workspace\ProteinTracker.jar org.junit.runner.JUnitCore com.simpleprogrammer.proteintracker.tests.TrackingServiceTests
 
 7. JUnit And Ant
-
 8. Creating an Ant Build
-
+ProteinTrackerTests -> Export -> General -> AntBuildFiles -> Select 2 Projects
+-> Generate 2x build.xml for both Projects "ProteinTracker" & "ProteinTrackerTests"
 9. Running With Ant
-
-10. JUnit Reporting Bug
-
+Select build.xml -> Run As -> External Tools Configurations -> Tab "Targets"
+Select Test(suite)s -> Apply
+!!! => Now Tests in TrackingServiceTests also runs on Build !!!
+10. JUnit Reporting Bug (Not a Bug Anymore after 1.9+)
+Select build.xml -> Run As -> External Tools Configurations -> Tab "Targets"
+Only Select "junitreport" -> Apply
+Report => E:\IT\eclipse\workspace\ProteinTrackerTests\junit\TESTS-TestSuites.xml
 11. Creating A Report
+Download & Install ant.apache.org
+cd E:\IT\apache-ant-1.10.2\bin
+ant -buildfile E:\IT\eclipse\workspace\ProteinTrackerTests\build.xml
+ant -buildfile E:\IT\eclipse\workspace\ProteinTrackerTests\build.xml junitreport
+Report => E:\IT\eclipse\workspace\ProteinTrackerTests\junit\TESTS-TestSuites.xml
 
 12. JUnit And Maven
+Maven Fundamentals - Bryan Hansen - Nov 06, 2012
 
 13. Converting To Maven
+ProteinTracker -> Configure -> Convert to Maven Project -> Accept Defaults -> Finish
+ProteinTrackerTests -> Configure -> Convert to Maven Project -> Accept Defaults -> Finish
+
+ProteinTrackerTestst/pom.xml -> Tab "Dependencies" -> 
+Add GroupId+ArtifactId+Version of ProteinTracker: ProteinTracker/ProteinTracker/0.0.1-SNAPSHOT
+Add GroupId+ArtifactId+Version of ProteinTracker: junit/junit/LATEST
 
 14. Running Tests in Maven
+# Install this Project in Maven Repository
+Project "ProteinTracker" -> Run As -> Maven Install
+
+# Maven Install BUILD FAILED:
+Window -> Preferences -> Java -> Installed JREs -> Select JDK(JRE)
+Window -> Preferences -> Java -> Installed JREs(ExecutionEnvironment) -> Select JDK(JRE)
+
+# Change SRC + TEST directories:
+ProteinTrackerTests/pom.xml
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>src</testSourceDirectory>
+*********************************************************************************
+# By Default the Plugin looks for certain patterns (files that end in Test.java)
+# => You can configure Plugin to change certain patterns
+*********************************************************************************
+Project "ProteinTracker" -> Run As -> Maven test
 
 15. Code Coverage
-
 16. Using EclEmma
 
 17. Cobetura
