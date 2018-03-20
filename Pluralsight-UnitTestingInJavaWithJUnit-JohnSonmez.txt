@@ -1,3 +1,11 @@
+C:\Program Files\eclipse\jee-oxygen\eclipse\eclipse.ini
+-Dorg.eclipse.ecf.provider.filetransfer.excludeContributors=org.eclipse.ecf.provider.filetransfer.httpclient
+-Dhttp.proxyHost=137.250.203.140
+-Dhttp.proxyPort=8080
+-Dhttps.proxyHost=137.250.203.140
+-Dhttps.proxyPort=8080
+-Dhttp.nonProxyHosts=localhost|127.0.0.1
+
 What is JUnit?
 + e.g. Test result of a Method-Call => Assertion: compares Expected to Received Output
 + JUnitTestRunner
@@ -260,15 +268,57 @@ Project "ProteinTracker" -> Run As -> Maven test
 
 15. Code Coverage
 16. Using EclEmma
+Help -> Eclipse Marketplace -> "EclEmma" Search -> Install -> Restart Eclipse
+Project "ProteinTrackerTests" -> Coverage As -> JUnit Test
 
-17. Cobetura
+17. Cobertura
+1) Download cobertura.sourceforge.net
+2) Adding the Cobertura custom tasks to Ant
+<taskdef classpath="cobertura.jar" resource="tasks.properties"/>
+3) Adding instrumentation to your classes
+<cobertura-instrument todir="build/instrumented-classes">
+	<fileset dir="build/classes">
+		<include name="**/*.class"/>
+	</fileset>
+</cobertura-instrument>
+4) Running an instrumented application
+<junit fork="yes">
+	<classpath location="${build.instrumented.dir}"/>
+	<classpath location="${build.classes.dir}"/>
+</junit>
+5) Cobertura reporting (Usefull at setting up a build system -> CI generate automatically)
+HTML coverage report
+<target name="coverage">
+	<cobertura-report srcdir="${src.dir}" destdir="${build.coverage.dir}"/>
+</target>
+XML coverage report
+<target name="coverage">
+	<cobertura-report format="xml" srcdir="${src.dir}" destdir="${build.coverage.dir}"/>
+</target>
+6) Taking control with Cobertura and check
+********************************************************************************************************
+* Forces to FAIL the BUILD if branchrates & linerates are NOT met
+********************************************************************************************************
+<cobertura-check branchrate="80" linerate="80">
+	<regex pattern="com.example.gui.*" branchrate="85" linerate="90"/>
+	<regex pattern="com.example.tool.*" branchrate="55" linerate="80"/>
+	<regex pattern="com.example.util.*" branchrate="85" linerate="95"/>
+</cobertura-check>
 
 18. Up Next
-
 =============================================================================================
 5) Beyond JUnit
 1. Introduction
-
+2. Continuous Testing
+On Modifying Source you want to Re-Run J-Unit-Tests that are associated with the Change!
+Conitnuous Testing Tool will monitor your code & 
+3. Using Infinitest
+https://github.com/junit-team/junit4/wiki/Continuous-testing
+=> http://infinitest.github.io/ => Drag & Drop this image to a running Eclipse.=> Install
+Help -> Eclipse Marketplace -> "Infinitest" Search -> Install -> Restart Eclipse
+****************************************************************************************************
+* Conitnuous Testing Tool will monitor your code & On Modifying Source you want to Re-Run J-Unit-Tests that are associated with the Change!
+******************************************************************************************************
 
 
 =======================================================================================
