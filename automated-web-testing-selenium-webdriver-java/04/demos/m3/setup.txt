@@ -1,0 +1,3 @@
+The setup for the before is just a matter of importing this project into your ide workspace. 
+
+The setup for the after contains the source code. You should just be able to import this project as a maven project into your IDE. 

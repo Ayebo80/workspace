@@ -1,0 +1,163 @@
+1) Course Overview
+Automated Testing is now allmost mandatory to guarantee stability of application!
+Manual Click&Testing does not guarantee Regression Testing will not break previous functionality by itself!
+========================================================================================
+2) Getting Started with Selenium
+1. Introduction
+How Do you know you have not broken something else while you try to fix something in SW!
+Testing, Regression Testing, Automated Testing => Selenium+Webdriver
+2. Selenium First Look
+https://github.com/SeleniumHQ/selenium-ide/releases 
+!!! Install by clicking on selenium-ide.xpi
+3. Selenium and WebDriver
+Selenium consumed the WebDriver API & integrated it into 1 project => Selenium IDE
+4. WebDriver First Look
+Build Path -> Add External Archives: selenium-server-standalone-3.11.0.jar
+5. Why Automated?
+1) Helps us to not re-introduce bugs back into our codebase
+=> Concurrent Development => Different People work on multiple branches/stages
+2) Tests like End-User (unlike UnitTests & IntegrationTests)
+3) Interpreted
+6. Architecture
+======================================================================================
+3) Using the Selenium IDE(Firefox plugin)
+9. Looking at Commands
+*************************************************************************
+!!! Developers should use good solid ID tags & classnames where they can
+***************************************************************************
+clickAndWait link=About
+<a href="/about/" title="Overview of Selenium">About</a>
+
+clickAndWait css=h3 > a
+<h3>
+	<a href="news.jsp">News/Blog</a>
+</h3>
+
+10. Creating Commands (z.b. für Kommentare)
+Selenium IDE => Insert new command
+Selenium IDE => Find target in page
+
+********************************************************************************
+https://www.seleniumhq.org/docs/02_selenium_ide.jsp#selenium-commands-selenese
+********************************************************************************
+Selenium IDE => Save Project
+
+11. Verifications
+Assert: If Assert fails => Test fails	!!! only 1 Assert-Value allowed
+Verify: If Verify fails => probably actually failing Test-Case	!!! multiple Verify-Values allowed
+
+12. Using Assert and Verify
+Site => Show All Available Commands
+Command		Target							Value
+assert title	JetBrains: Developer Tools for Professionals and Teams
+verify text	css=div.home-page-header__pre-text			The drive to develop
+
+13. Creating Test Suites
+************************************************************************
+Selenium IDE robust enough to do automating testing!
+I would not consider this my ultimate tool => Webdriver better
+Great for less technical user
+************************************************************************
+
+Testcase Login: Invalid user name or password
+Command		Target							Value
+verify text	css=span.field-validation-error				Invalid user name or password
+
+14. Exporting
+Open Saved File
+Options => Options => Formats Tab => Java / JUnit 4 / WebDriver
+Export Test Case As... Java / JUnit 4 / WebDriver
+
+15. Other Features
+# Breakpoints: Pause Test at this Breakpoint
+Right-Click => Toggle Breakpoint
+
+# Base URL: Use Relative Path in our Test-Case
+**************************************************
+Can run on Dev, QA, Prod => By Changing Base URL
+**************************************************
+
+# Options => Options => Plugins
+https://www.seleniumhq.org/projects/ide/plugins.jsp
+
+16. Summary
+======================================================================================
+4) Understanding WebDriver	*** RECOMMENDED WAY ***
+1. Introduction
+2. What is WebDriver?
+WebDriver is API, we programm against API by using WebDriver Test Script(JAVA), to communicate with dif. browsers:
+Chrome, Firefox, IE
+********************************************************************************
+3. Setting up WebDriver
+a. Launch Eclipse/Spring and select workspace
+b. Package Explorer -> New -> Other -> Maven Project (handels our transitive dependencies for us) 
+-> Check "Create a simple project" -> Next
+c. Group Id: com.pluralsight /// Artifact Id: WebDriverDemo
+d. Copy E:\IT\eclipse\workspace\automated-web-testing-selenium-webdriver-java\04\demos\m3\after\pom.xml
+to WebDriverDemo\pom.xml
+e. Package Explorer -> WebdriverDemo -> Maven -> Update -> OK
+f. Package Explorer -> src/main/java -> New -> Class -> 
+-> Package: com.pluralsight
+-> Name: WebDriverDemo
+-> Check "public static void main(String[] args)"
+g. 		WebDriver driver = new FirefoxDriver();
+		driver.get("http://pluralsight.com");
+h. Run as.. -> Java Application
+i. Package Explorer -> WebdriverDemo -> New -> Folder -> lib/geckodriver
+i. The latest version can be downloaded from https://github.com/mozilla/geckodriver/releases
+-> Download geckodriver-v0.20.0-win32.zip & copy EXE to E:\IT\eclipse\workspace\WebDriverDemo\lib\geckodriver
+j. Copy System.setProperty("webdriver.gecko.driver", "E:/IT/eclipse/workspace/WebDriverDemo/lib/geckodriver/geckodriver.exe");
+nach src/main/java/com.pluralsight/WebDriverDemo.java
+k. Run as.. -> Java Application
+*****************************************************************************
+4. Fixing System Properties (RELATIV PATH instead of ABSOLUTE PATH)
+a. Comment out "E:/IT/eclipse/workspace/WebDriverDemo/lib/geckodriver/"
+b. Open Environment Variables -> System Variables -> "New..."
+	-> Variable name: GECKO_PATH
+	-> Variable value: E:/IT/eclipse/workspace/WebDriverDemo/lib/geckodriver/
+c. Open Environment Variables -> System Variables -> Path -> Edit...
+	-> Add %GECKO_PATH%; to the beginning of Path -> OK
+d. Reopen Eclipse/Spring
+e. Run as.. -> Java Application
+*****************************************************************************
+5. Other Browsers
+a.		//WebDriver driver = new FirefoxDriver();
+		WebDriver driver = new ChromeDriver();
+
+	STRG+SHIFT+O = Organize our Imports
+
+b. Run as.. -> Java Application
+c. Package Explorer -> WebdriverDemo -> New -> Folder -> lib/chromedriver
+d. The latest version can be downloaded from http://chromedriver.storage.googleapis.com/index.html
+-> Look for latest release at https://sites.google.com/a/chromium.org/chromedriver/
+-> Download /2.37/chromedriver_win32.zip & copy EXE to E:\IT\eclipse\workspace\WebDriverDemo\lib\chromedriver
+e. Open Environment Variables -> System Variables -> "New..."
+	-> Variable name: CHROME_PATH
+	-> Variable value: E:/IT/eclipse/workspace/WebDriverDemo/lib/chromedriver/
+f. Open Environment Variables -> System Variables -> Path -> Edit...
+	-> Add %CHROME_PATH%; to the beginning of Path -> OK
+g. Reopen Eclipse/Spring
+h. Run as.. -> Java Application
+
+***************************************************
+!!! Chrome: Only local connections are allowed !!!
+***************************************************
+=> TEST WITH IE, Opera etc... Download Driver & Configure the same way
+******************************************************************************
+6. Finding Elements
+ClassName
+ID
+Name
+TagName
+CssSelector
+LinkText
+PartialLinkText
+XPath
+**************************************************************************
+!!! As DEV: Use ID it makes Automation simpler !!!!
+**************************************************************************
+7. A Simple Script
+
+
+
+
