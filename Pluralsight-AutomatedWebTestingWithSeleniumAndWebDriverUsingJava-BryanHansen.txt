@@ -156,8 +156,126 @@ XPath
 **************************************************************************
 !!! As DEV: Use ID it makes Automation simpler !!!!
 **************************************************************************
+
 7. A Simple Script
+import org.openqa.selenium.WebElement;
+WebElement searchField = driver.findElement(By.id("lst-ib"));
+searchField.sendKeys("pluralisght");
+searchField.sendKeys(Keys.RETURN);
+
+8. Page Elements
+org.openqa.selenium
+=> Interface WebElement
+*******************************************************************
+* !!! You can do everything you want with WebElement !!!
+*******************************************************************
+All Superinterfaces:
+SearchContext, TakesScreenshot
+All Known Implementing Classes:
+RemoteWebElement
+
+clear		# Clear Input- or Text-Field
+click		# fires JS events
+findElement(s)	# 1. Get table first, 2. then use findElement(s)
+getAttribute	# get Attribute of a Elemente
+getCssValue	# 
+sendKeys	# send Keys(Keys.RETURN);
+submit		# submit a Form
+isDisplayed
+isEnabled
+getLocation
+isSelected
+getSize
+getTagName
+getText
+
+9. A More Complex Script
+*************************************************
+*** !! get rid of that Type-Ahead AJAX Call !!
+************************************************
+//get rid of that Type-Ahead AJAX Call
+searchField.submit();
+
+10. Clicking the Image
+***************************************************
+* CSS Online Selector:	https://try.jsoup.org/
+****************************************************
+https://try.jsoup.org => Fetch URL => Enter URL of previous site => Fetch
+Select => CSS Query: a[class = rg_l] # Anchor-Tag a, Class rg_l
+
+11. Assert and Verify
+Assert and Verify NOT Supported by WebElement, Just Supported By Frameworks
+
+12. Summary
++ Browsers
++ WebElement
++ Navigate
++ findElements()	#!! IMPORTANT SKILL to use Selenium
+========================================================================================
+5) Applying Advanced WebDriver Techniques
+1. Introduction
+Alot of Webpages have Dynamic Elements on Page Dynamicly Loaded Elements or AJAX 
+2. Radio Buttons
+Project "WebDriverDemo" -> New -> Source Folder -> src/main/webapp -> Finish
+src/main/webapp -> New -> Other -> Web(HTML file) -> RadioButtonTest.html
+RadioButtonTest.html -> Open With -> Web Browser
+file:///E:/IT/eclipse/workspace/WebDriverDemo/src/main/webapp/RadioButtonTest.html
+SEPARATE MORE TESTCASES:
+src/main/java->com.pluralsight-> New -> Class -> WebDriverRadioButtons / Check "public static void main" -> Finish
+3. Choosing a Radio Button
+4. Getting a Radio Button Value
+5. Checkboxes
+6. Selecting a Checkbox
+src/main/webapp -> New -> Other -> Web(HTML file) -> CheckboxTest.html
+src/main/java->com.pluralsight-> New -> Class -> WebDriverCheckboxes / Check "public static void main" -> Finish
+CheckboxesTest.html -> Open With -> Web Browser
+file:///E:/IT/eclipse/workspace/WebDriverDemo/src/main/webapp/CheckboxTest.html
+7. Select Items
+8. Using Select
+src/main/webapp -> New -> Other -> Web(HTML file) -> SelectItemTest.html
+file:///E:/IT/eclipse/workspace/WebDriverDemo/src/main/webapp/SelectItemTest.html
+*****************************************************
+import org.openqa.selenium.support.ui.Select;
+Select select = new Select(selectElement)
+*****************************************************
+import org.openqa.selenium.support.ui.
+	Clock,Duration,ExpectedCondition(s),FluentWait,ISelect,LoadableComponent,
+	Quotes,Sleeper,SlowLoadableComponent,SystemClock,UnexpectedTagNameException,
+	Wait,WebDriverWait,Select
+***************************************************************************************
+9. Tables
+**************************************************************************************
+I don't recommend to use XPath, unless you have a sufficiently complex page structure
+=> Best Way to Exces inside a Nested Table
+**************************************************************************************
+10. Getting Table Data
+src/main/webapp -> New -> Other -> Web(HTML file) -> TableTest.html
+file:///E:/IT/eclipse/workspace/WebDriverDemo/src/main/webapp/TableTest.html
+# <tr> = Table Row; <td> = Table Data
+11. XPath
+***************************************
+INSTEAD of outerTable+innerTable+row
+Good UNIT-TEST to grab that information
+***************************************
+Open file:///E:/IT/eclipse/workspace/WebDriverDemo/src/main/webapp/TableTest.html in Browser
+Right-Click on "Table 2 Row 2" -> "Elements" Tab -> Copy>Copy XPath
+12. Explicit Waits
+***************************************
+Explicit Wait BETTER & FASTER => Large Test Suite => Makes a Difference
+***************************************
+13. Using the Explicit Wait
+*************************************
+//Implicit Wait will wait for each Elements
+//Explicit Wait will only wait on a specified Element
+*************************************
+//Implicit Wait will wait for each Elements
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//Explicit Wait will only wait on a specified Element
+WebDriverWait wait = new WebDriverWait(driver, 10);
+wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Bilder")));
+14. Summary
 
 
 
-
+========================================================================================
+6) Using Selenium Server
