@@ -1,22 +1,28 @@
 package com.pluralsight;
 
-import java.util.concurrent.TimeUnit;
+import java.net.URL;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebDriverDemo {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		//System.setProperty("webdriver.gecko.driver", "E:/IT/eclipse/workspace/WebDriverDemo/lib/geckodriver/geckodriver.exe");
 		
 		//WebDriver driver = new FirefoxDriver();
-		WebDriver driver = new ChromeDriver();
+		//WebDriver driver = new ChromeDriver();
+		WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), 
+				new DesiredCapabilities("chrome", "", Platform.WINDOWS));
+		
+		
 		driver.get("http://www.google.com");
 		
 		WebElement searchField = driver.findElement(By.id("lst-ib"));

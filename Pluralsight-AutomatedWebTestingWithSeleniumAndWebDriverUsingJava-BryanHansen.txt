@@ -275,7 +275,95 @@ WebDriverWait wait = new WebDriverWait(driver, 10);
 wait.until(ExpectedConditions.presenceOfElementLocated(By.linkText("Bilder")));
 14. Summary
 
-
-
 ========================================================================================
 6) Using Selenium Server
+1. Introduction
+Selenium Server is used to remotely execute Tests & can be run as part of a grid
+2. Selenium Server
+********************************************************************
+You can have a Linux Server running Chrome or a MAC running Safari
+********************************************************************
+3. Selenium Server Grid Mode
+***********************************************************************************
+Grid Mode: 1 Server is a Hub => Hub will decide on Nodes where to run these Tests
+=> Only Difference to Selenium Server: 1 PC is the Hub => Nodes registered on Hub
+*** Grid Mode: run whole Suite in Parallel ***
+***********************************************************************************
+4. Starting Selenium Server
+a) At least JRE and if not the JDK installed on your environment
+b) www.seleniumhq.org/download => Download Selenium Standalone Server
+Copy selenium-server-standalone-3.11.0.jar to E:\IT\eclipse\workspace\WebDriverDemo\lib\seleniumserverstandalone
+CMD: cd E:\IT\eclipse\workspace\WebDriverDemo\lib\seleniumserverstandalone\
+CMD: java -jar selenium-server-standalone-3.11.0.jar #Runs on default localhost:4444
+*** !!! Keep this CMD-Prompt open !!! ***
+5. Running a Test
+public class WebDriverDemo {
+	public static void main(String[] args) throws Exception {
+		WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), 
+				DesiredCapabilities.chrome());
+...
+*** !!! If you get Element Not Found : Implicit or ExplicitWait(on the Element Not Found) !!! ***
+
+6. Grid Configuration
+7. Setting up Grid
+***************************************************************************************
+# 1. Setup Hub on a new CMD
+CMD: cd E:\IT\eclipse\workspace\WebDriverDemo\lib\seleniumserverstandalone\
+CMD: java -jar selenium-server-standalone-3.11.0.jar -role hub
+# 1b. Messages:
+# Nodes should register to http://192.168.30.20:4444/grid/register/
+# Clients should register to http://192.168.30.20:4444/wd/hub
+# 2. Setup Node_1 on a new CMD
+CMD: cd E:\IT\eclipse\workspace\WebDriverDemo\lib\seleniumserverstandalone\
+CMD: java -jar selenium-server-standalone-3.11.0.jar -role node -hub http://192.168.30.20:4444/grid/register/
+# 2b. Messages:
+# Registering the node to the hub: http://192.168.30.20:4444/grid/register/
+# The node is registered to the hub and ready to use
+# 3. Open http://192.168.30.20:4444/grid/console in Web-Browser & click "view config"
+***************************************************************************************
+8. 2nd Node Setup
+# 1. Setup Node_2 on a new CMD (needs another Port on Hub)
+CMD: cd E:\IT\eclipse\workspace\WebDriverDemo\lib\seleniumserverstandalone\
+CMD: java -jar selenium-server-standalone-3.11.0.jar -role node -hub http://192.168.30.20:4444/grid/register/ -port 5556
+# 1b. Messages:
+# Registering the node to the hub: http://192.168.30.20:4444/grid/register/
+# The node is registered to the hub and ready to use
+# 2. Refresh http://192.168.30.20:4444/grid/console in Web-Browser
+
+9. Running a Test in Grid
+# new DesiredCapabilities(browser, browser-version, platform )
+# Platform.WINDOWS (Platform.WIN10), Platform.LINUX, Platform.ANDROID, Platform.MAC (Platform.SIERRA),
+# Find out Chrome-Version: Call chrome://version in Chrome
+public class WebDriverDemo {
+	public static void main(String[] args) throws Exception {
+		WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), 
+				new DesiredCapabilities("chrome", "", Platform.WIN10));
+...
+10. Parallel Processing
+*********************************************************
+So in our solution(IDE) spin of Threads, run our Tests on those Threads
+They are hitting the same Hub & Hub can execute Threads in parallel
+=> more Details on Chapter Building a Framework
+
+*********************************************************
+11. Grid Strategies
++ Small Machines (commodity HW: MAC minis, OLD Machines)
++ VM / Hypervisors (DOCKER Instances)
++ Amazon EC2 (Instances loaded on demand => only pay on CPU-Cylces you use)
++ Cloud Foundry (good for serious, heavy-weight Testing)
+
+12. Summary
+=====================================================================================
+7) Building a Framework
+1. Introduction
+2. Why Not Record?
+3. Page Object Model
+4. Demo: Framework Setup
+5. Dependencies
+6. Demo: Basic Test
+7. Planning a Test
+8. Demo: Testing Paths
+9. Selenium And WebDriver
+10. Demo: Refactoring to a Factory
+11. Summary
+
